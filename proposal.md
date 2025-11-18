@@ -7,9 +7,9 @@
 - Hydrocarbon bonding
 - Way to remove bonds
 - Way to name the built compound
-- Area to drag and drop your elements
+- Way to spawn in the elements
 - Ability to drag the whole chain
 
 ## Nice To Have
 - Add other elements to bond aswell like halogens
-- 
+- way to rotate the elements 
