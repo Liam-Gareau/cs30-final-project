@@ -10,7 +10,7 @@ let elements = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  let aCarbon = new Carbon(width/2, height/2, "black", 15);
+  let aCarbon = new Carbon(width/2, height/2, "black", 15, false);
   elements.push(aCarbon);
 }
 
@@ -20,15 +20,17 @@ function draw() {
   for (let element of elements) {
     element.display();
     element.move();
+    mousePressed(element.x, element.y, element.radius, element.button);
   }
 }
 
 class Elements {
-  constructor(x, y, color, radius) {
+  constructor(x, y, color, radius, button) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
+    this.button = button;
   }
 
   display() {
@@ -38,19 +40,21 @@ class Elements {
   }
 
   move() {
-    mousePressed(this.x, this.y, this.radius);
+    if (this.button === true) {
+      this.x = mouseX;
+      this.y = mouseY;
+    }
   }
 }
 
 class Carbon extends Elements {
-  constructor(x, y, color, radius) {
-    super(x, y, color, radius);
+  constructor(x, y, color, radius, button) {
+    super(x, y, color, radius, button);
   }
 }
 
-function mousePressed(x, y, radius) {
+function mousePressed(x, y, radius, button) {
   if (mouseX > x - radius && mouseX < x + radius && mouseY > y - radius && mouseY < y + radius) {
-    x = mouseX;
-    y = mouseY;
+    button = !button;
   }
 }
