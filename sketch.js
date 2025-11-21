@@ -16,11 +16,28 @@ function setup() {
 
 function draw() {
   background(220);
+  spawnElements();
 
   for (let element of elements) {
     element.display();
     element.move();
-    mousePressed(element.x, element.y, element.radius, element.button);
+  }
+}
+
+class Bonds {
+  constructor(x1, y1, x2, y2, color, button) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.color = color;
+    this.button = button;
+  }
+}
+
+class SingleBond extends Bonds {
+  constructor(x1, y1, x2, y2, color, button) {
+    super(x1, y1, x2, y2, color, button);
   }
 }
 
@@ -40,7 +57,7 @@ class Elements {
   }
 
   move() {
-    if (this.button === true) {
+    if (this.button) {
       this.x = mouseX;
       this.y = mouseY;
     }
@@ -53,8 +70,27 @@ class Carbon extends Elements {
   }
 }
 
-function mousePressed(x, y, radius, button) {
-  if (mouseX > x - radius && mouseX < x + radius && mouseY > y - radius && mouseY < y + radius) {
-    button = !button;
+class Hydrogen extends Elements {
+  constructor(x, y, color, radius, button) {
+    super(x, y, color, radius, button);
+  }
+}
+
+function mousePressed() {
+  for (let element of elements) {
+    if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
+      element.button = !element.button;
+    }
+  }
+}
+
+function spawnElements() {
+  if (keyIsDown(67) && mouseIsPressed) {
+    let aCarbon = new Carbon(mouseX, mouseY, "black", 15, false);
+    elements.push(aCarbon);
+  }
+  else if (keyIsDown(72) && mouseIsPressed) {
+    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false);
+    elements.push(aHydrogen);
   }
 }

@@ -12,4 +12,6 @@
 
 ## Nice To Have
 - Add other elements to bond aswell like halogens
+- Add functional groups
 - way to rotate the elements 
+- add a way to have double and triple bonds
