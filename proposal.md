@@ -9,6 +9,8 @@
 - Way to name the built compound
 - Way to spawn in the elements
 - Ability to drag the whole chain
+- Instruction manual
+- auditory sound effect for removing bonds
 
 ## Nice To Have
 - Add other elements to bond aswell like halogens

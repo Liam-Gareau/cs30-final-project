@@ -6,6 +6,8 @@
 // - describe what you did to take this project "above and beyond"
 
 let elements = [];
+const RECTWIDTH = 50;
+const RECTHEIGHT = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -24,20 +26,32 @@ function draw() {
   }
 }
 
-class Bonds {
-  constructor(x1, y1, x2, y2, color, button) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
+class Bond {
+  constructor(x, y, color, button, width, height) {
+    this.x = x;
+    this.y = y;
     this.color = color;
     this.button = button;
+    this.width = width;
+    this.height = height;
+  }
+
+  display() {
+    fill(this.color);
+    rect(this.x, this.y, this.width, this.height);
+  }
+
+  move() {
+    if (this.button) {
+      this.x = mouseX;
+      this.y = mouseY;
+    }
   }
 }
 
-class SingleBond extends Bonds {
-  constructor(x1, y1, x2, y2, color, button) {
-    super(x1, y1, x2, y2, color, button);
+class SingleBond extends Bond {
+  constructor(x, y, color, button, width, height) {
+    super(x, y, color, button, width, height);
   }
 }
 
@@ -52,7 +66,7 @@ class Elements {
 
   display() {
     fill(this.color);
-    noStroke();
+    // noStroke();
     circle(this.x, this.y, this.radius*2);
   }
 
@@ -61,6 +75,9 @@ class Elements {
       this.x = mouseX;
       this.y = mouseY;
     }
+  }
+
+  bond(x, y) {
   }
 }
 
@@ -81,6 +98,10 @@ function mousePressed() {
     if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
       element.button = !element.button;
     }
+    else if (mouseX > element.x - element.width && mouseX < element.x + element.width && mouseY > element.y - element.height && mouseY < element.y + element.height) {
+      console.log(element.button);
+      element.button = !element.button;
+    }
   }
 }
 
@@ -93,4 +114,14 @@ function spawnElements() {
     let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false);
     elements.push(aHydrogen);
   }
+  else if (keyIsDown(66) && mouseIsPressed) {
+    let aBond = new Bond(mouseX, mouseY, "purple", false, RECTWIDTH, RECTHEIGHT);
+    elements.push(aBond);
+  }
 }
+
+// function spawnBond() {
+//   for (let element of elements) {
+//     if (dist(element))
+//   }
+// }
