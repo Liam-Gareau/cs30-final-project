@@ -11,29 +11,29 @@ const RECTHEIGHT = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  let aCarbon = new Carbon(width/2, height/2, "black", 15, false);
-  elements.push(aCarbon);
+  rectMode(CENTER);
 }
 
 function draw() {
   background(220);
-  spawnElements();
+  // spawnElements();
 
   for (let element of elements) {
     element.display();
     element.move();
+    element.bonding();
   }
 }
 
 class Bond {
-  constructor(x, y, color, button, width, height) {
+  constructor(x, y, color, button, width, height, bondArray) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.button = button;
     this.width = width;
     this.height = height;
+    this.bondArray = bondArray;
   }
 
   display() {
@@ -56,12 +56,13 @@ class SingleBond extends Bond {
 }
 
 class Elements {
-  constructor(x, y, color, radius, button) {
+  constructor(x, y, color, radius, button, bondArray) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
     this.button = button;
+    this.bondArray = bondArray;
   }
 
   display() {
@@ -77,19 +78,28 @@ class Elements {
     }
   }
 
-  bond(x, y) {
+  bonding() {
+    for (let object of elements) {
+      if (this.x !== object.x) {
+        if (dist(this.x, this.y, object.x, object.y) < 50) {
+          if (this.bondArray.length <= 3 && object.bondArray.length <= 3) {
+
+          }
+        }
+      }
+    }
   }
 }
 
 class Carbon extends Elements {
-  constructor(x, y, color, radius, button) {
-    super(x, y, color, radius, button);
+  constructor(x, y, color, radius, button, bondArray) {
+    super(x, y, color, radius, button, bondArray);
   }
 }
 
 class Hydrogen extends Elements {
-  constructor(x, y, color, radius, button) {
-    super(x, y, color, radius, button);
+  constructor(x, y, color, radius, button, bondArray) {
+    super(x, y, color, radius, button, bondArray);
   }
 }
 
@@ -98,30 +108,23 @@ function mousePressed() {
     if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
       element.button = !element.button;
     }
-    else if (mouseX > element.x - element.width && mouseX < element.x + element.width && mouseY > element.y - element.height && mouseY < element.y + element.height) {
-      console.log(element.button);
+    else if (mouseX > element.x - element.width/2 && mouseX < element.x + element.width/2 && mouseY > element.y - element.height/2 && mouseY < element.y + element.height/2) {
       element.button = !element.button;
     }
   }
 }
 
-function spawnElements() {
-  if (keyIsDown(67) && mouseIsPressed) {
-    let aCarbon = new Carbon(mouseX, mouseY, "black", 15, false);
+function mouseClicked() {
+  if (keyIsDown(67)) {
+    let aCarbon = new Carbon(mouseX, mouseY, "black", 15, false, []);
     elements.push(aCarbon);
   }
-  else if (keyIsDown(72) && mouseIsPressed) {
-    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false);
+  else if (keyIsDown(72)) {
+    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false, []);
     elements.push(aHydrogen);
   }
-  else if (keyIsDown(66) && mouseIsPressed) {
-    let aBond = new Bond(mouseX, mouseY, "purple", false, RECTWIDTH, RECTHEIGHT);
+  else if (keyIsDown(66)) {
+    let aBond = new Bond(mouseX, mouseY, "purple", false, RECTWIDTH, RECTHEIGHT, []);
     elements.push(aBond);
   }
 }
-
-// function spawnBond() {
-//   for (let element of elements) {
-//     if (dist(element))
-//   }
-// }
