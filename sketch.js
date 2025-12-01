@@ -21,37 +21,8 @@ function draw() {
   for (let element of elements) {
     element.display();
     element.move();
+    element.distance();
     element.bonding();
-  }
-}
-
-class Bond {
-  constructor(x, y, color, button, width, height, bondArray) {
-    this.x = x;
-    this.y = y;
-    this.color = color;
-    this.button = button;
-    this.width = width;
-    this.height = height;
-    this.bondArray = bondArray;
-  }
-
-  display() {
-    fill(this.color);
-    rect(this.x, this.y, this.width, this.height);
-  }
-
-  move() {
-    if (this.button) {
-      this.x = mouseX;
-      this.y = mouseY;
-    }
-  }
-}
-
-class SingleBond extends Bond {
-  constructor(x, y, color, button, width, height) {
-    super(x, y, color, button, width, height);
   }
 }
 
@@ -78,15 +49,23 @@ class Elements {
     }
   }
 
-  bonding() {
+  distance() {
     for (let object of elements) {
-      if (this.x !== object.x) {
+      if (this !== object) {
         if (dist(this.x, this.y, object.x, object.y) < 50) {
           if (this.bondArray.length <= 3 && object.bondArray.length <= 3) {
-
+            this.bondArray.push(object);
+            object.bondArray.push(this);
           }
         }
       }
+    }
+  }
+
+  bonding() {
+    for (let object of this.bondArray) { 
+      stroke("purple");
+      line(this.x, this.y, object.x, object.y);
     }
   }
 }
@@ -123,8 +102,38 @@ function mouseClicked() {
     let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false, []);
     elements.push(aHydrogen);
   }
-  else if (keyIsDown(66)) {
-    let aBond = new Bond(mouseX, mouseY, "purple", false, RECTWIDTH, RECTHEIGHT, []);
-    elements.push(aBond);
-  }
+  // else if (keyIsDown(66)) {
+  //   let aBond = new Bond(mouseX, mouseY, "purple", false, RECTWIDTH, RECTHEIGHT, []);
+  //   elements.push(aBond);
+  // }
 }
+
+// class Bond {
+//   constructor(x, y, color, button, width, height, bondArray) {
+//     this.x = x;
+//     this.y = y;
+//     this.color = color;
+//     this.button = button;
+//     this.width = width;
+//     this.height = height;
+//     this.bondArray = bondArray;
+//   }
+
+//   display() {
+//     fill(this.color);
+//     rect(this.x, this.y, this.width, this.height);
+//   }
+
+//   move() {
+//     if (this.button) {
+//       this.x = mouseX;
+//       this.y = mouseY;
+//     }
+//   }
+// }
+
+// class SingleBond extends Bond {
+//   constructor(x, y, color, button, width, height) {
+//     super(x, y, color, button, width, height);
+//   }
+// }
