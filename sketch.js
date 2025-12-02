@@ -8,6 +8,9 @@
 let elements = [];
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
+const AMOUNTOFCARBONBONDS = 4;
+const AMOUNTOFHYDROGENBONDS = 1;
+const BONDINGDISTANCE = 50;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -19,41 +22,43 @@ function draw() {
   // spawnElements();
 
   for (let element of elements) {
-    element.display();
-    element.move();
-    element.distance();
-    element.bonding();
+    element.update();
   }
 }
 
 class Elements {
-  constructor(x, y, color, radius, button, bondArray) {
+  constructor(x, y, color, radius, button, bondArray, arrayLength, bonded) {
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.color = color;
     this.button = button;
     this.bondArray = bondArray;
+    this.arrayLength = arrayLength;
+    this.bonded = bonded;
   }
 
   display() {
     fill(this.color);
-    // noStroke();
     circle(this.x, this.y, this.radius*2);
   }
 
   move() {
-    if (this.button) {
-      this.x = mouseX;
-      this.y = mouseY;
+    if (!this.bonded) {
+      if (this.button) {
+        this.x = mouseX;
+        this.y = mouseY;
+      }
+    }
+    if (this.bonded) {
     }
   }
 
   distance() {
     for (let object of elements) {
       if (this !== object) {
-        if (dist(this.x, this.y, object.x, object.y) < 50) {
-          if (this.bondArray.length <= 3 && object.bondArray.length <= 3) {
+        if (dist(this.x, this.y, object.x, object.y) < BONDINGDISTANCE) {
+          if (this.bondArray.length < this.arrayLength && object.bondArray.length < object.arrayLength && !this.bondArray.includes(object) && !object.bondArray.includes(this)) {
             this.bondArray.push(object);
             object.bondArray.push(this);
           }
@@ -68,17 +73,24 @@ class Elements {
       line(this.x, this.y, object.x, object.y);
     }
   }
+
+  update() {
+    this.display();
+    this.move();
+    this.distance();
+    this.bonding();
+  }
 }
 
 class Carbon extends Elements {
-  constructor(x, y, color, radius, button, bondArray) {
-    super(x, y, color, radius, button, bondArray);
+  constructor(x, y, color, radius, button, bondArray, arrayLength) {
+    super(x, y, color, radius, button, bondArray, arrayLength);
   }
 }
 
 class Hydrogen extends Elements {
-  constructor(x, y, color, radius, button, bondArray) {
-    super(x, y, color, radius, button, bondArray);
+  constructor(x, y, color, radius, button, bondArray, arrayLength) {
+    super(x, y, color, radius, button, bondArray, arrayLength);
   }
 }
 
@@ -95,11 +107,11 @@ function mousePressed() {
 
 function mouseClicked() {
   if (keyIsDown(67)) {
-    let aCarbon = new Carbon(mouseX, mouseY, "black", 15, false, []);
+    let aCarbon = new Carbon(mouseX, mouseY, "black", 15, false, [], AMOUNTOFCARBONBONDS, false);
     elements.push(aCarbon);
   }
   else if (keyIsDown(72)) {
-    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false, []);
+    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false, [], AMOUNTOFHYDROGENBONDS, false);
     elements.push(aHydrogen);
   }
   // else if (keyIsDown(66)) {
