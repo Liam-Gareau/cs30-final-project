@@ -99,9 +99,6 @@ function mousePressed() {
     if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
       element.button = !element.button;
     }
-    else if (mouseX > element.x - element.width/2 && mouseX < element.x + element.width/2 && mouseY > element.y - element.height/2 && mouseY < element.y + element.height/2) {
-      element.button = !element.button;
-    }
   }
 }
 
@@ -114,38 +111,14 @@ function mouseClicked() {
     let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false, [], AMOUNTOFHYDROGENBONDS, false);
     elements.push(aHydrogen);
   }
-  // else if (keyIsDown(66)) {
-  //   let aBond = new Bond(mouseX, mouseY, "purple", false, RECTWIDTH, RECTHEIGHT, []);
-  //   elements.push(aBond);
-  // }
+  else if (keyIsDown(82)) {
+    for (let element of elements) {
+      if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius && mouseIsPressed) {
+        for (let otherElement of element.bondArray) {
+          otherElement.bondArray.pop(element);
+          element.bondArray.pop(otherElement);
+        }
+      }
+    }
+  }
 }
-
-// class Bond {
-//   constructor(x, y, color, button, width, height, bondArray) {
-//     this.x = x;
-//     this.y = y;
-//     this.color = color;
-//     this.button = button;
-//     this.width = width;
-//     this.height = height;
-//     this.bondArray = bondArray;
-//   }
-
-//   display() {
-//     fill(this.color);
-//     rect(this.x, this.y, this.width, this.height);
-//   }
-
-//   move() {
-//     if (this.button) {
-//       this.x = mouseX;
-//       this.y = mouseY;
-//     }
-//   }
-// }
-
-// class SingleBond extends Bond {
-//   constructor(x, y, color, button, width, height) {
-//     super(x, y, color, button, width, height);
-//   }
-// }
