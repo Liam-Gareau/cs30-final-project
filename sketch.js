@@ -11,6 +11,7 @@ const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
 const AMOUNTOFHYDROGENBONDS = 1;
 const BONDINGDISTANCE = 50;
+const STRUCTUREDISTANCE = 75;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -49,8 +50,6 @@ class Elements {
         this.x = mouseX;
         this.y = mouseY;
       }
-    }
-    if (this.bonded) {
     }
   }
 
@@ -113,11 +112,18 @@ function mouseClicked() {
   }
   else if (keyIsDown(82)) {
     for (let element of elements) {
-      if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius && mouseIsPressed) {
+      if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
         for (let otherElement of element.bondArray) {
-          otherElement.bondArray.pop(element);
-          element.bondArray.pop(otherElement);
+          otherElement.bondArray.splice(otherElement.bondArray.indexOf(element), 1);
+          element.bondArray.splice(element.bondArray.indexOf(otherElement), 1);
         }
+      }
+    }
+  }
+  else if (keyIsDown(77)) {
+    for (let element of elements) {
+      for (let otherElement of element.bondArray) {
+        
       }
     }
   }
