@@ -123,7 +123,6 @@ function mouseClicked() {
   else if (keyIsDown(77)) {
     for (let element of elements) {
       for (let otherElement of element.bondArray) {
-        
       }
     }
   }
