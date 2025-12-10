@@ -127,3 +127,7 @@ function mouseClicked() {
     }
   }
 }
+
+// look up for moving the chains
+// depth first search
+// breadth first search
