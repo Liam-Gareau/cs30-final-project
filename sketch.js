@@ -128,6 +128,5 @@ function mouseClicked() {
   }
 }
 
-// look up for moving the chains
-// depth first search
-// breadth first search
+// Decided on using depth first search
+// i think i know how to implement it with time tmr
