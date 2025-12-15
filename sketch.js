@@ -121,13 +121,27 @@ function mouseClicked() {
     }
   }
   else if (keyIsDown(77)) {
-
+    let adj = 
   }
 }
 
-function dfs() {
-  
+function dfs(adj) {
+  const visited = new Array(adj.length).fill(false);
+  const res = [];
+  dfsRec(adj, visited, 0, res);
+  return res;
 }
 
-// Decided on using depth first search
-// i think i know how to implement it with time tmr
+
+function dfsRec(adj, visited, s, res) {
+  visited[s] = true;
+  res.push(s);
+
+  // Recursively visit all adjacent vertices 
+  // that are not visited yet
+  for (let i of adj[s]) {
+    if (!visited[i]) {
+      dfsRec(adj, visited, i, res);
+    }
+  }
+}
