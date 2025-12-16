@@ -82,14 +82,14 @@ class Elements {
 }
 
 class Carbon extends Elements {
-  constructor(x, y, color, radius, button, bondArray, arrayLength) {
-    super(x, y, color, radius, button, bondArray, arrayLength);
+  constructor(x, y, color, radius, button, bondArray, arrayLength, bonded) {
+    super(x, y, color, radius, button, bondArray, arrayLength, bonded);
   }
 }
 
 class Hydrogen extends Elements {
-  constructor(x, y, color, radius, button, bondArray, arrayLength) {
-    super(x, y, color, radius, button, bondArray, arrayLength);
+  constructor(x, y, color, radius, button, bondArray, arrayLength, bonded) {
+    super(x, y, color, radius, button, bondArray, arrayLength, bonded);
   }
 }
 
@@ -121,7 +121,11 @@ function mouseClicked() {
     }
   }
   else if (keyIsDown(77)) {
-    let adj = 
+    for (let element of elements){
+      if (element.x === mouseX) {
+        dfs(element.bondArray);
+      }
+    }
   }
 }
 
@@ -132,16 +136,34 @@ function dfs(adj) {
   return res;
 }
 
-
 function dfsRec(adj, visited, s, res) {
   visited[s] = true;
   res.push(s);
 
-  // Recursively visit all adjacent vertices 
-  // that are not visited yet
   for (let i of adj[s]) {
     if (!visited[i]) {
       dfsRec(adj, visited, i, res);
     }
   }
 }
+
+// function dfs(adj) {
+//   const visited = new Array(adj.length).fill(false);
+//   const res = [];
+//   dfsRec(adj, visited, 0, res);
+//   return res;
+// }
+
+
+// function dfsRec(adj, visited, s, res) {
+//   visited[s] = true;
+//   res.push(s);
+
+//   // Recursively visit all adjacent vertices 
+//   // that are not visited yet
+//   for (let i of adj[s]) {
+//     if (!visited[i]) {
+//       dfsRec(adj, visited, i, res);
+//     }
+//   }
+// }
