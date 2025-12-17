@@ -4,13 +4,13 @@
 - I'm making a chemistry "study" game that allows you to build different hydrocarbons and name them
 
 ## Needs To Have
-- Hydrocarbon bonding
-- Way to remove bonds
+- Hydrocarbon bonding (yes)
+- Way to remove bonds (yes)
 - Way to name the built compound
-- Way to spawn in the elements
+- Way to spawn in the elements (yes)
 - Ability to drag the whole chain
 - Instruction manual
-- auditory sound effect for removing bonds
+- auditory sound effect for removing bonds (yes)
 
 ## Nice To Have
 - Add other elements to bond aswell like halogens

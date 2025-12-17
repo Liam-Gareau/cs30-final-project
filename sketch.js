@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 let elements = [];
+let pop;
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
@@ -116,6 +117,7 @@ function mouseClicked() {
         for (let otherElement of element.bondArray) {
           otherElement.bondArray.splice(otherElement.bondArray.indexOf(element), 1);
           element.bondArray.splice(element.bondArray.indexOf(otherElement), 1);
+          pop.play();
         }
       }
     }
@@ -145,6 +147,10 @@ function dfsRec(adj, visited, s, res) {
       dfsRec(adj, visited, i, res);
     }
   }
+}
+
+function preload() {
+  pop = loadSound("pop-sound-Effect.mp3");
 }
 
 // function dfs(adj) {
