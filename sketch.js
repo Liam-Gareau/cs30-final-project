@@ -21,7 +21,7 @@ function setup() {
 
 function draw() {
   background(220);
-  // spawnElements();
+  instructions();
 
   for (let element of elements) {
     element.update();
@@ -151,6 +151,14 @@ function dfsRec(adj, visited, s, res) {
 
 function preload() {
   pop = loadSound("pop-sound-Effect.mp3");
+}
+
+function instructions() {
+  if (keyIsDown(73)) {
+    textAlign(CENTER);
+    noStroke();
+    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C, H", width/2, height/2, 180);
+  }
 }
 
 // function dfs(adj) {
