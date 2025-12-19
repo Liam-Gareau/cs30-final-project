@@ -157,7 +157,7 @@ function instructions() {
   if (keyIsDown(73)) {
     textAlign(CENTER);
     noStroke();
-    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C, H", width/2, height/2, 180);
+    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C (carbon), H (hydrogen), ", width/2, height/2, 180);
   }
 }
 
