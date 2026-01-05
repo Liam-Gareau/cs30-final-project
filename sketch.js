@@ -7,12 +7,15 @@
 
 let elements = [];
 let pop;
+let name;
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
 const AMOUNTOFHYDROGENBONDS = 1;
 const BONDINGDISTANCE = 50;
 const STRUCTUREDISTANCE = 75;
+const HYDROGENRADIUS = 7.5;
+const CARBONRADIUS = 15;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -22,9 +25,13 @@ function setup() {
 function draw() {
   background(220);
   instructions();
+  naming();
+  text(name, width/2, height/6);
 
-  for (let element of elements) {
-    element.update();
+  if (!keyIsDown(73)) {
+    for (let element of elements) {
+      element.update();
+    }
   }
 }
 
@@ -104,11 +111,11 @@ function mousePressed() {
 
 function mouseClicked() {
   if (keyIsDown(67)) {
-    let aCarbon = new Carbon(mouseX, mouseY, "black", 15, false, [], AMOUNTOFCARBONBONDS, false);
+    let aCarbon = new Carbon(mouseX, mouseY, "black", CARBONRADIUS, false, [], AMOUNTOFCARBONBONDS, false);
     elements.push(aCarbon);
   }
   else if (keyIsDown(72)) {
-    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", 7.5, false, [], AMOUNTOFHYDROGENBONDS, false);
+    let aHydrogen = new Hydrogen(mouseX, mouseY, "white", HYDROGENRADIUS, false, [], AMOUNTOFHYDROGENBONDS, false);
     elements.push(aHydrogen);
   }
   else if (keyIsDown(82)) {
@@ -130,6 +137,8 @@ function mouseClicked() {
     }
   }
 }
+
+let s = 0;
 
 function dfs(adj) {
   const visited = new Array(adj.length).fill(false);
@@ -154,10 +163,21 @@ function preload() {
 }
 
 function instructions() {
+  textAlign(CENTER);
+  noStroke();
+  textSize(15);
+  text("Hold I for instructions", 100, 100);
   if (keyIsDown(73)) {
-    textAlign(CENTER);
     noStroke();
-    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C (carbon), H (hydrogen), ", width/2, height/2, 180);
+    fill("black");
+    textSize(25);
+    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C (carbon), H (hydrogen), Drag the atoms closer together to form bonds, Click and hold r over the atoms to remove its bonds, Once satisfied with the length of your chain press n to name the chain ", width/2, height/2, width/2);
+  }
+}
+
+function naming() {
+  if (keyIsDown(78)) {
+    name = prompt("What is the name of this chain of atoms?");
   }
 }
 
