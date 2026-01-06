@@ -6,10 +6,10 @@
 ## Needs To Have
 - Hydrocarbon bonding (yes)
 - Way to remove bonds (yes)
-- Way to name the built compound
+- Way to name the built compound (kinda)
 - Way to spawn in the elements (yes)
 - Ability to drag the whole chain
-- Instruction manual
+- Instruction manual (yes)
 - auditory sound effect for removing bonds (yes)
 
 ## Nice To Have

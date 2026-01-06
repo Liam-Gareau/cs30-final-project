@@ -8,6 +8,8 @@
 let elements = [];
 let pop;
 let name;
+let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
+let check = false;
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
@@ -129,6 +131,14 @@ function mouseClicked() {
       }
     }
   }
+  else if (keyIsDown(68)) {
+    for (let element of elements) {
+      if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
+        elements.splice(element, 1);
+      }
+    }
+  }
+
   else if (keyIsDown(77)) {
     for (let element of elements){
       if (element.x === mouseX) {
@@ -179,6 +189,28 @@ function naming() {
   if (keyIsDown(78)) {
     name = prompt("What is the name of this chain of atoms?");
   }
+  for (let pre of prefix) {
+    if (name === pre + "ane") {
+      !check;
+    }
+  }
+  if (check) {
+    for (let pre of prefix) {
+      if (prefix[carbonsOnScreen()-1] === pre + "ane") {
+        
+      }
+    }
+  }
+}
+
+function carbonsOnScreen() {
+  let counter = 0;
+  for (let thing of elements) {
+    if (thing === Carbon) {
+      counter++;
+    }
+  }
+  return counter;
 }
 
 // function dfs(adj) {
