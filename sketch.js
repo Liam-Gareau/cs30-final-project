@@ -7,7 +7,7 @@
 
 let elements = [];
 let pop;
-let name;
+let name = "Awaiting name...";
 let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 let check = false;
 const RECTWIDTH = 50;
@@ -28,6 +28,7 @@ function draw() {
   background(220);
   instructions();
   naming();
+  nameChecker();
   text(name, width/2, height/6);
 
   if (!keyIsDown(73)) {
@@ -188,29 +189,42 @@ function instructions() {
 function naming() {
   if (keyIsDown(78)) {
     name = prompt("What is the name of this chain of atoms?");
-  }
-  for (let pre of prefix) {
-    if (name === pre + "ane") {
-      !check;
+    if (name === "" || name === null) {
+      name = "Awaiting name...";
     }
   }
-  if (check) {
-    for (let pre of prefix) {
-      if (prefix[carbonsOnScreen()-1] === pre + "ane") {
-        
-      }
-    }
+  else {
+    text(nameChecker(), 200, 300);
   }
 }
 
 function carbonsOnScreen() {
   let counter = 0;
   for (let thing of elements) {
-    if (thing === Carbon) {
+    if (thing.color === "black") {
       counter++;
     }
   }
   return counter;
+}
+
+function nameChecker() {
+  for (let pre of prefix) {
+    if (name === pre + "ane") {
+      check = true;
+    }
+  }
+  if (check) {
+    let trueOrFalse = "";
+    for (let pre of prefix) {
+      if (prefix[carbonsOnScreen()-1] === pre) {
+        return trueOrFalse = "Correct name";
+      }
+      else {
+        return trueOrFalse = "Wrong name";
+      }
+    }
+  }
 }
 
 // function dfs(adj) {
