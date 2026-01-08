@@ -135,7 +135,7 @@ function mouseClicked() {
   else if (keyIsDown(68)) {
     for (let element of elements) {
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
-        elements.splice(element, 1);
+        elements.splice(elements.indexOf(element), 1);
       }
     }
   }
@@ -182,7 +182,7 @@ function instructions() {
     noStroke();
     fill("black");
     textSize(25);
-    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C (carbon), H (hydrogen), Drag the atoms closer together to form bonds, Click and hold r over the atoms to remove its bonds, Once satisfied with the length of your chain press n to name the chain ", width/2, height/2, width/2);
+    text("Make your own hydocarbons, Click and hold the followin  g to summon their respective elements, C (carbon), H (hydrogen), Drag the atoms closer together to form bonds, Click and hold r over the atoms to remove its bonds, Once satisfied with the length of your chain press n to name the chain, for any carbons not bonded press and hold d in order to delete them as to not interfere with the auto grading of your name. ", width/2, height/2, width/2);
   }
 }
 
@@ -192,9 +192,11 @@ function naming() {
     if (name === "" || name === null) {
       name = "Awaiting name...";
     }
-  }
-  else {
-    text(nameChecker(), 200, 300);
+    else {
+      fill("black");
+      text(nameChecker(), 200, 300);
+      // console.log("work");
+    }
   }
 }
 
@@ -209,18 +211,22 @@ function carbonsOnScreen() {
 }
 
 function nameChecker() {
-  for (let pre of prefix) {
-    if (name === pre + "ane") {
-      check = true;
+  if (!check) {
+    for (let pre of prefix) {
+      if (name === pre + "ane") {
+        check = true;
+      }
     }
   }
-  if (check) {
+  else if (check) {
     let trueOrFalse = "";
     for (let pre of prefix) {
       if (prefix[carbonsOnScreen()-1] === pre) {
+        console.log("here");
         return trueOrFalse = "Correct name";
       }
       else {
+        console.log("also here");
         return trueOrFalse = "Wrong name";
       }
     }
