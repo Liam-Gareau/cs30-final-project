@@ -10,6 +10,7 @@ let pop;
 let name = "Awaiting name...";
 let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 let check = false;
+let trueOrFalse = "";
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
@@ -38,6 +39,7 @@ function draw() {
   }
 }
 
+//base code for all my different elements
 class Elements {
   constructor(x, y, color, radius, button, bondArray, arrayLength, bonded) {
     this.x = x;
@@ -104,6 +106,7 @@ class Hydrogen extends Elements {
   }
 }
 
+//moves my elements
 function mousePressed() {
   for (let element of elements) {
     if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
@@ -112,6 +115,7 @@ function mousePressed() {
   }
 }
 
+//spawning, deleting, reseting all my different functions
 function mouseClicked() {
   if (keyIsDown(67)) {
     let aCarbon = new Carbon(mouseX, mouseY, "black", CARBONRADIUS, false, [], AMOUNTOFCARBONBONDS, false);
@@ -149,6 +153,70 @@ function mouseClicked() {
   }
 }
 
+//tells people how the game works
+function instructions() {
+  textAlign(CENTER);
+  noStroke();
+  textSize(15);
+  text("Hold I for instructions", 100, 100);
+  if (keyIsDown(73)) {
+    noStroke();
+    fill("black");
+    textSize(25);
+    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C (carbon), H (hydrogen), Drag the atoms closer together to form bonds, Click and hold r over the atoms to remove its bonds, Once satisfied with the length of your chain press n to name the chain, for any carbons not bonded press and hold d in order to delete them as to not interfere with the auto grading of your name. ", width/2, height/2, width/2);
+  }
+}
+
+//sets the name of the chain
+function naming() {
+  if (keyIsDown(78)) {
+    name = prompt("What is the name of this chain of atoms?");
+    if (name === "" || name === null) {
+      name = "Awaiting name...";
+    }
+  }
+  else {
+    fill("black");
+    text(trueOrFalse, 200, 300);
+  }
+}
+
+//checks the carbons on screen
+function carbonsOnScreen() {
+  let counter = 0;
+  for (let thing of elements) {
+    if (thing.color === "black") {
+      counter++;
+    }
+  }
+  return counter;
+}
+
+
+//checks to see if the name is right
+function nameChecker() {
+  if (!check) {
+    for (let pre of prefix) {
+      if (name === pre + "ane") {
+        check = true;
+      }
+    }
+  }
+  else if (check) {
+    for (let pre of prefix) {
+      if (prefix[carbonsOnScreen()-1] + "ane" === name) {
+        return trueOrFalse = "Correct name";
+      }
+    }
+    return trueOrFalse = "Wrong name";
+  }
+}
+
+//loads sound
+function preload() {
+  pop = loadSound("pop-sound-Effect.mp3");
+}
+
 let s = 0;
 
 function dfs(adj) {
@@ -157,6 +225,7 @@ function dfs(adj) {
   dfsRec(adj, visited, 0, res);
   return res;
 }
+
 
 function dfsRec(adj, visited, s, res) {
   visited[s] = true;
@@ -169,69 +238,6 @@ function dfsRec(adj, visited, s, res) {
   }
 }
 
-function preload() {
-  pop = loadSound("pop-sound-Effect.mp3");
-}
-
-function instructions() {
-  textAlign(CENTER);
-  noStroke();
-  textSize(15);
-  text("Hold I for instructions", 100, 100);
-  if (keyIsDown(73)) {
-    noStroke();
-    fill("black");
-    textSize(25);
-    text("Make your own hydocarbons, Click and hold the followin  g to summon their respective elements, C (carbon), H (hydrogen), Drag the atoms closer together to form bonds, Click and hold r over the atoms to remove its bonds, Once satisfied with the length of your chain press n to name the chain, for any carbons not bonded press and hold d in order to delete them as to not interfere with the auto grading of your name. ", width/2, height/2, width/2);
-  }
-}
-
-function naming() {
-  if (keyIsDown(78)) {
-    name = prompt("What is the name of this chain of atoms?");
-    if (name === "" || name === null) {
-      name = "Awaiting name...";
-    }
-    else {
-      fill("black");
-      text(nameChecker(), 200, 300);
-      // console.log("work");
-    }
-  }
-}
-
-function carbonsOnScreen() {
-  let counter = 0;
-  for (let thing of elements) {
-    if (thing.color === "black") {
-      counter++;
-    }
-  }
-  return counter;
-}
-
-function nameChecker() {
-  if (!check) {
-    for (let pre of prefix) {
-      if (name === pre + "ane") {
-        check = true;
-      }
-    }
-  }
-  else if (check) {
-    let trueOrFalse = "";
-    for (let pre of prefix) {
-      if (prefix[carbonsOnScreen()-1] === pre) {
-        console.log("here");
-        return trueOrFalse = "Correct name";
-      }
-      else {
-        console.log("also here");
-        return trueOrFalse = "Wrong name";
-      }
-    }
-  }
-}
 
 // function dfs(adj) {
 //   const visited = new Array(adj.length).fill(false);
