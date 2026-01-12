@@ -6,6 +6,7 @@
 // - describe what you did to take this project "above and beyond"
 
 let elements = [];
+let chain = [];
 let pop;
 let name = "Awaiting name...";
 let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
@@ -115,7 +116,7 @@ function mousePressed() {
   }
 }
 
-//spawning, deleting, reseting all my different functions
+//spawning, deleting, reseting all my different elements
 function mouseClicked() {
   if (keyIsDown(67)) {
     let aCarbon = new Carbon(mouseX, mouseY, "black", CARBONRADIUS, false, [], AMOUNTOFCARBONBONDS, false);
@@ -146,8 +147,8 @@ function mouseClicked() {
 
   else if (keyIsDown(77)) {
     for (let element of elements){
-      if (element.x === mouseX) {
-        dfs(element.bondArray);
+      if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
+        moveChain(element);
       }
     }
   }
@@ -158,6 +159,7 @@ function instructions() {
   textAlign(CENTER);
   noStroke();
   textSize(15);
+  fill("black");
   text("Hold I for instructions", 100, 100);
   if (keyIsDown(73)) {
     noStroke();
@@ -217,27 +219,14 @@ function preload() {
   pop = loadSound("pop-sound-Effect.mp3");
 }
 
-let s = 0;
-
-function dfs(adj) {
-  const visited = new Array(adj.length).fill(false);
-  const res = [];
-  dfsRec(adj, visited, 0, res);
-  return res;
-}
-
-
-function dfsRec(adj, visited, s, res) {
-  visited[s] = true;
-  res.push(s);
-
-  for (let i of adj[s]) {
-    if (!visited[i]) {
-      dfsRec(adj, visited, i, res);
-    }
+function moveChain(element) {
+  chain.push(element);
+  let start = element.bondArray.length;
+  for (let i = 0; i < start; i++) {
+    nextElement = element.bondArray[i];
+    return moveChain(nextElement);
   }
 }
-
 
 // function dfs(adj) {
 //   const visited = new Array(adj.length).fill(false);
