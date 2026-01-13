@@ -141,6 +141,7 @@ function mouseClicked() {
     for (let element of elements) {
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
         elements.splice(elements.indexOf(element), 1);
+        chain.splice(chain.indexOf(element), 1);
       }
     }
   }
@@ -205,10 +206,8 @@ function nameChecker() {
     }
   }
   else if (check) {
-    for (let pre of prefix) {
-      if (prefix[carbonsOnScreen()-1] + "ane" === name) {
-        return trueOrFalse = "Correct name";
-      }
+    if (prefix[carbonsOnScreen()-1] + "ane" === name) {
+      return trueOrFalse = "Correct name";
     }
     return trueOrFalse = "Wrong name";
   }
@@ -220,11 +219,13 @@ function preload() {
 }
 
 function moveChain(element) {
-  chain.push(element);
-  let start = element.bondArray.length;
-  for (let i = 0; i < start; i++) {
-    nextElement = element.bondArray[i];
-    return moveChain(nextElement);
+  if (!chain.includes(element)) {
+    chain.push(element);
+    let search = element.bondArray.length;
+    for (let i = 0; i < search; i++) {
+      nextElement = element.bondArray[i];
+      return moveChain(nextElement);
+    }
   }
 }
 
