@@ -12,6 +12,7 @@ let name = "Awaiting name...";
 let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 let check = false;
 let trueOrFalse = "";
+let done = false;
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
@@ -149,7 +150,10 @@ function mouseClicked() {
   else if (keyIsDown(77)) {
     for (let element of elements){
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
-        moveChain(element);
+        moveChain(element, false);
+        for (let thing of chain) {
+          thing.x
+        }
       }
     }
   }
@@ -218,15 +222,21 @@ function preload() {
   pop = loadSound("pop-sound-Effect.mp3");
 }
 
-function moveChain(element) {
+//checks for everything that is bonded to
+function moveChain(element, end) {
   if (!chain.includes(element)) {
     chain.push(element);
     let search = element.bondArray.length;
     for (let i = 0; i < search; i++) {
       nextElement = element.bondArray[i];
-      return moveChain(nextElement);
+      console.log("here");
+      moveChain(nextElement, false);
     }
   }
+  else if (element.bondArray.length === 1) {
+    end = true;
+  }
+
 }
 
 // function dfs(adj) {
