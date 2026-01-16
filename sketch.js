@@ -13,6 +13,8 @@ let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non",
 let check = false;
 let trueOrFalse = "";
 let done = false;
+let additionX;
+let additionY;
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
@@ -32,6 +34,7 @@ function draw() {
   instructions();
   naming();
   nameChecker();
+  moveChain(mouseX, pmouseX, mouseY, pmouseY);
   text(name, width/2, height/6);
 
   if (!keyIsDown(73)) {
@@ -148,15 +151,23 @@ function mouseClicked() {
   }
 
   else if (keyIsDown(77)) {
+    chain = [];
     for (let element of elements){
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
-        moveChain(element, false);
+        detectChain(element);
+        console.log("here");
         for (let thing of chain) {
-          thing.x
+          thing.x += additionX;
+          thing.y += additionY;
         }
       }
     }
   }
+}
+
+function moveChain(currentMX, previousMX, currentMY, previousMY) {
+  additionX = currentMX - previousMX;
+  additionY = currentMY - previousMY;
 }
 
 //tells people how the game works
@@ -184,6 +195,7 @@ function naming() {
   }
   else {
     fill("black");
+    textSize(15);
     text(trueOrFalse, 200, 300);
   }
 }
@@ -223,20 +235,15 @@ function preload() {
 }
 
 //checks for everything that is bonded to
-function moveChain(element, end) {
+function detectChain(element) {
   if (!chain.includes(element)) {
     chain.push(element);
     let search = element.bondArray.length;
     for (let i = 0; i < search; i++) {
       nextElement = element.bondArray[i];
-      console.log("here");
-      moveChain(nextElement, false);
+      detectChain(nextElement);
     }
   }
-  else if (element.bondArray.length === 1) {
-    end = true;
-  }
-
 }
 
 // function dfs(adj) {
