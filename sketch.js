@@ -1,6 +1,7 @@
 // Final Project
 // Liam Gareau
 // Date January 19th 2026
+// Extra for experts - I implimented one of my nice to have features with added time that I had, this feature was very different than anything I had made before because I had to figure out the math behind rotating things in a circle, the feature isn't a necessity for the game to work however it's nice to have for the future if I we're ever to add more things to this project such as functional groups or what not.
 
 //defining all of my variables
 let elements = [];
@@ -192,9 +193,9 @@ function updateAll() {
   text(name, width/2, height/6);
   if (keyIsDown(77)) {
     for (let thing of chain) {
-        thing.x += additionX;
-        thing.y += additionY;
-      }
+      thing.x += additionX;
+      thing.y += additionY;
+    }
   }
   if (!keyIsDown(73)) {
     for (let element of elements) {
@@ -215,7 +216,7 @@ function instructions() {
 
   if (keyIsDown(73)) {
     textAlign(CENTER);
-    text("Begin by placing carbons down and dragging them close together in order to form bonds between them. Once satisfied with the length place hydrogens around each carbon to fill its valence shell. When chain is satisfied click N and attempt to name the hydrocarbon, if correct game will tell you.", width/2, height/2, width/2);
+    text("Begin by placing carbons down and dragging them close together in order to form bonds between them. Once satisfied with the length place hydrogens around each carbon to fill its valence shell. When chain is satisfied click N and attempt to name the hydrocarbon, if correct game will tell you.", width/4, height/2, width/2);
   }
 }
 
@@ -283,17 +284,17 @@ function detectChain(element) {
 
 //figures out where the center of the chain is to rotate around that point
 function getChainCenter() {
- let sumX = 0;
- let sumY = 0;
+  let sumX = 0;
+  let sumY = 0;
 
- for (let atom of chain) {
-  sumX += atom.x;
-  sumY += atom.y;
- }
- return {
-  x: sumX / chain.length,
-  y: sumY / chain.length
- };
+  for (let atom of chain) {
+    sumX += atom.x;
+    sumY += atom.y;
+  }
+  return {
+    x: sumX / chain.length,
+    y: sumY / chain.length
+  };
 }
 
 //rotates the chain when holding m and scrolling the scroll wheel
