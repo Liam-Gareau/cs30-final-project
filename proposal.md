@@ -8,12 +8,12 @@
 - Way to remove bonds (yes)
 - Way to name the built compound (yes)
 - Way to spawn in the elements (yes)
-- Ability to drag the whole chain
+- Ability to drag the whole chain (yes)
 - Instruction manual (yes)
 - auditory sound effect for removing bonds (yes)
 
 ## Nice To Have
 - Add other elements to bond aswell like halogens
 - Add functional groups
-- way to rotate the elements 
+- way to rotate the elements (yes)
 - add a way to have double and triple bonds

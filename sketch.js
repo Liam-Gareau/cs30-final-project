@@ -1,10 +1,8 @@
 // Final Project
 // Liam Gareau
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Date January 19th 2026
 
+//defining all of my variables
 let elements = [];
 let chain = [];
 let pop;
@@ -12,9 +10,18 @@ let name = "Awaiting name...";
 let prefix = ["meth", "eth", "prop", "but", "pent", "hex", "hept", "oct", "non", "dec"];
 let check = false;
 let trueOrFalse = "";
-let done = false;
 let additionX;
 let additionY;
+let items = [
+  "Hold one of the following keys and left click to interect with atoms",
+  "C - Spawn Carbon",
+  "H - Spawn Hydrogen",
+  "M - Move Chain",
+  "R - Remove Bonds",
+  "D - Delete Atom",
+  "M + scroll wheel - rotate chain",
+  "I - Further Instructions"
+];
 const RECTWIDTH = 50;
 const RECTHEIGHT = 10;
 const AMOUNTOFCARBONBONDS = 4;
@@ -24,24 +31,14 @@ const STRUCTUREDISTANCE = 75;
 const HYDROGENRADIUS = 7.5;
 const CARBONRADIUS = 15;
 
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  rectMode(CENTER);
 }
 
 function draw() {
   background(220);
-  instructions();
-  naming();
-  nameChecker();
-  moveChain(mouseX, pmouseX, mouseY, pmouseY);
-  text(name, width/2, height/6);
-
-  if (!keyIsDown(73)) {
-    for (let element of elements) {
-      element.update();
-    }
-  }
+  updateAll();
 }
 
 //base code for all my different elements
@@ -57,11 +54,14 @@ class Elements {
     this.bonded = bonded;
   }
 
+  //displays each element
   display() {
     fill(this.color);
+    noStroke();
     circle(this.x, this.y, this.radius*2);
   }
 
+  //moves them with mouse
   move() {
     if (!this.bonded) {
       if (this.button) {
@@ -71,6 +71,7 @@ class Elements {
     }
   }
 
+  //checks distance between elements in order to bond them
   distance() {
     for (let object of elements) {
       if (this !== object) {
@@ -84,6 +85,7 @@ class Elements {
     }
   }
 
+  //draws the line acting as the bond
   bonding() {
     for (let object of this.bondArray) { 
       stroke("purple");
@@ -91,6 +93,7 @@ class Elements {
     }
   }
 
+  //runs all the functions for the object
   update() {
     this.display();
     this.move();
@@ -99,37 +102,44 @@ class Elements {
   }
 }
 
+//sub class for the carbons
 class Carbon extends Elements {
   constructor(x, y, color, radius, button, bondArray, arrayLength, bonded) {
     super(x, y, color, radius, button, bondArray, arrayLength, bonded);
   }
 }
 
+//sub class for the hydrogens
 class Hydrogen extends Elements {
   constructor(x, y, color, radius, button, bondArray, arrayLength, bonded) {
     super(x, y, color, radius, button, bondArray, arrayLength, bonded);
   }
 }
 
-//moves my elements
+//chooses the element to move when it is clicked
 function mousePressed() {
-  for (let element of elements) {
-    if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
-      element.button = !element.button;
+  if (!keyIsDown(77)) {
+    for (let element of elements) {
+      if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
+        element.button = !element.button;
+      }
     }
   }
 }
 
 //spawning, deleting, reseting all my different elements
 function mouseClicked() {
+  //when holding C and left clicking creates a carbon atom
   if (keyIsDown(67)) {
     let aCarbon = new Carbon(mouseX, mouseY, "black", CARBONRADIUS, false, [], AMOUNTOFCARBONBONDS, false);
     elements.push(aCarbon);
   }
+  //when holding H and left clicking creates a hydrogen atom
   else if (keyIsDown(72)) {
     let aHydrogen = new Hydrogen(mouseX, mouseY, "white", HYDROGENRADIUS, false, [], AMOUNTOFHYDROGENBONDS, false);
     elements.push(aHydrogen);
   }
+  //when holding r and left clicking removes bonds of selected atom
   else if (keyIsDown(82)) {
     for (let element of elements) {
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
@@ -141,6 +151,7 @@ function mouseClicked() {
       }
     }
   }
+  //when holding r and left clicking over an atom it deletes it
   else if (keyIsDown(68)) {
     for (let element of elements) {
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
@@ -149,39 +160,62 @@ function mouseClicked() {
       }
     }
   }
-
+  //when holding m and left clicking over an atom it will add what its bonded to into an array to move the whole thing
   else if (keyIsDown(77)) {
     chain = [];
     for (let element of elements){
       if (mouseX > element.x - element.radius && mouseX < element.x + element.radius && mouseY > element.y - element.radius && mouseY < element.y + element.radius) {
         detectChain(element);
-        console.log("here");
-        for (let thing of chain) {
-          thing.x += additionX;
-          thing.y += additionY;
-        }
       }
     }
   }
 }
 
+//takes in the current mx and my postion aswell as the past mx and my positions in order to know how much to move each object apart of the chain
 function moveChain(currentMX, previousMX, currentMY, previousMY) {
-  additionX = currentMX - previousMX;
-  additionY = currentMY - previousMY;
+  if (keyIsDown(77)) {
+    additionX = currentMX - previousMX;
+    additionY = currentMY - previousMY;
+  }
+  else {
+    additionX = 0;
+    additionY = 0;
+  }
+}
+
+//simplifys my draw loop
+function updateAll() {
+  instructions();
+  naming();
+  nameChecker();
+  moveChain(mouseX, pmouseX, mouseY, pmouseY);
+  text(name, width/2, height/6);
+  if (keyIsDown(77)) {
+    for (let thing of chain) {
+        thing.x += additionX;
+        thing.y += additionY;
+      }
+  }
+  if (!keyIsDown(73)) {
+    for (let element of elements) {
+      element.update();
+    }
+  }
 }
 
 //tells people how the game works
 function instructions() {
-  textAlign(CENTER);
   noStroke();
-  textSize(15);
-  fill("black");
-  text("Hold I for instructions", 100, 100);
+  textSize(16);
+  fill(0);
+  textAlign(LEFT);
+  for (let i = 0; i < items.length; i++) {
+    text(items[i], 50, 50 + i * 25);
+  }
+
   if (keyIsDown(73)) {
-    noStroke();
-    fill("black");
-    textSize(25);
-    text("Make your own hydocarbons, Click and hold the following to summon their respective elements, C (carbon), H (hydrogen), Drag the atoms closer together to form bonds, Click and hold r over the atoms to remove its bonds, Once satisfied with the length of your chain press n to name the chain, for any carbons not bonded press and hold d in order to delete them as to not interfere with the auto grading of your name. ", width/2, height/2, width/2);
+    textAlign(CENTER);
+    text("Begin by placing carbons down and dragging them close together in order to form bonds between them. Once satisfied with the length place hydrogens around each carbon to fill its valence shell. When chain is satisfied click N and attempt to name the hydrocarbon, if correct game will tell you.", width/2, height/2, width/2);
   }
 }
 
@@ -196,6 +230,7 @@ function naming() {
   else {
     fill("black");
     textSize(15);
+    textAlign(CENTER);
     text(trueOrFalse, 200, 300);
   }
 }
@@ -234,7 +269,7 @@ function preload() {
   pop = loadSound("pop-sound-Effect.mp3");
 }
 
-//checks for everything that is bonded to
+//checks for everything that the selected atom is bonded to
 function detectChain(element) {
   if (!chain.includes(element)) {
     chain.push(element);
@@ -246,23 +281,46 @@ function detectChain(element) {
   }
 }
 
-// function dfs(adj) {
-//   const visited = new Array(adj.length).fill(false);
-//   const res = [];
-//   dfsRec(adj, visited, 0, res);
-//   return res;
-// }
+//figures out where the center of the chain is to rotate around that point
+function getChainCenter() {
+ let sumX = 0;
+ let sumY = 0;
 
+ for (let atom of chain) {
+  sumX += atom.x;
+  sumY += atom.y;
+ }
+ return {
+  x: sumX / chain.length,
+  y: sumY / chain.length
+ };
+}
 
-// function dfsRec(adj, visited, s, res) {
-//   visited[s] = true;
-//   res.push(s);
+//rotates the chain when holding m and scrolling the scroll wheel
+function rotateChain(angle) {
+  if (chain.length === 0) {
+    return;
+  }
 
-//   // Recursively visit all adjacent vertices 
-//   // that are not visited yet
-//   for (let i of adj[s]) {
-//     if (!visited[i]) {
-//       dfsRec(adj, visited, i, res);
-//     }
-//   }
-// }
+  let center = getChainCenter();
+
+  for (let atom of chain) {
+    let dx = atom.x - center.x;
+    let dy = atom.y - center.y;
+
+    //trajectories for the rotation of each atom in the chain
+    let newX = dx * cos(angle) - dy * sin(angle);
+    let newY = dx * sin(angle) + dy * cos(angle);
+
+    atom.x = center.x + newX;
+    atom.y = center.y + newY;
+  }
+}
+
+//detects the rotation of the scroll wheel
+function mouseWheel(event) {
+  if (keyIsDown(77) && chain.length > 0) {
+    let angle = event.delta * 0.001;
+    rotateChain(angle);
+  }
+}
